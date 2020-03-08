@@ -7,7 +7,9 @@ import { ApplicationState } from '../../store';
 interface ReduxProps {
     uploadStatus: UploadStatusEnum,
     uploadProgressPercent: number,
-    filesToUpload: File[]
+    filesToUpload: File[],
+    uploadProgressSize: number,
+    filesToUploadSize: number
 }
 
 const TransferCardContainer = () => {
@@ -15,11 +17,16 @@ const TransferCardContainer = () => {
     const dispatch = useDispatch();
     const pageActionDispatcher = new UploadActionDispatcher(dispatch);
     const { changeUploadProgressPercent, changeUploadStatus, setFilesToUpload } = pageActionDispatcher;
-    const { uploadStatus, uploadProgressPercent, filesToUpload  } = useSelector<ApplicationState, ReduxProps>((state: ApplicationState) => {
+    const { uploadStatus, uploadProgressPercent, filesToUpload,
+        uploadProgressSize,
+        filesToUploadSize
+    } = useSelector<ApplicationState, ReduxProps>((state: ApplicationState) => {
         return {
             uploadStatus: state.uploadState.uploadStatus,
             uploadProgressPercent: state.uploadState.uploadProgressPercent,
-            filesToUpload: state.uploadState.filesToUpload
+            filesToUpload: state.uploadState.filesToUpload,
+            uploadProgressSize: state.uploadState.uploadProgressSize,
+            filesToUploadSize: state.uploadState.filesToUploadSize
         }
     });
     return <div>
@@ -29,6 +36,9 @@ const TransferCardContainer = () => {
             changeUploadProgressPercent={changeUploadProgressPercent}
             filesToUpload={filesToUpload}
             setFilesToUpload={setFilesToUpload}
+            uploadProgressSize={uploadProgressSize}
+            filesToUploadSize={filesToUploadSize}
+
         /> 
     </div>
 }

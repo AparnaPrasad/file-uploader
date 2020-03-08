@@ -1,17 +1,24 @@
 import React from 'react';
-import './App.css';
 import { Provider } from 'react-redux';
 import configureStore from '../../store/createStore';
 import HomePage from '../HomePage/HomePage';
+import { Container } from 'react-bootstrap';
+
+const styles = {
+    container: {
+        padding: '0 15px',
+        height: '100%'
+    },
+}
 const App = () => {
     const store = configureStore();
 
     return (<Provider store={store}>
-        <div className="App">
-            <HomePage/>
-        </div>
-        </Provider>
-  );
+        <Container fluid style={styles.container}>
+            <HomePage />
+        </Container>
+    </Provider>
+    );
 }
 
 export default App;

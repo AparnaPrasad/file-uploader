@@ -1,4 +1,5 @@
 import { Action, Reducer, Dispatch } from "redux";
+import { bytesToSize } from "../utilities/helper";
 
 export enum UploadStatusEnum {
     UPLOAD_READY_TO_START,
@@ -11,13 +12,17 @@ export enum UploadStatusEnum {
 export interface UploadState {
     uploadStatus: UploadStatusEnum,
     uploadProgressPercent: number,
-    filesToUpload: File[]
+    uploadProgressSize: number,
+    filesToUpload: File[],
+    filesToUploadSize: number
 }
 
 export const initialState: UploadState = {
     uploadStatus: UploadStatusEnum.UPLOAD_READY_TO_START,
     uploadProgressPercent: 0,
-    filesToUpload: []
+    filesToUpload: [],
+    uploadProgressSize: 0,
+    filesToUploadSize: 0
 };
 
 
@@ -42,12 +47,15 @@ export const uploadReducer: Reducer<UploadState, DispatchAction> = (state = init
         case UploadActionType.CHANGE_UPLOAD_PROGRESS_PERCENT:
             return {
                 ...state,
-                uploadProgressPercent: action.payload?.uploadProgressPercent||0
+                uploadProgressPercent: action.payload?.uploadProgressPercent || 0,
+                uploadProgressSize: action.payload?.uploadProgressSize || 0
             }
         case UploadActionType.SET_FILES_TO_UPLOAD:
+            const totalFileSizeBytes = action.payload?.filesToUpload?.reduce((prev, curr) => (prev + curr.size), 0) || 0
             return {
                 ...state,
-                filesToUpload: action.payload?.filesToUpload || []
+                filesToUpload: action.payload?.filesToUpload || [],
+                filesToUploadSize: totalFileSizeBytes
             }
 
         default:
@@ -62,7 +70,7 @@ export class UploadActionDispatcher {
     constructor(dispatch: Dispatch<DispatchAction>) {
         this.dispatch = dispatch;
     }
-    changeUploadStatus = (uploadStatus?: UploadStatusEnum) => this.dispatch({ type: UploadActionType.CHANGE_UPLOAD_STATUS, payload: { uploadStatus } });
-    changeUploadProgressPercent = (uploadProgressPercent?: number) => this.dispatch({ type: UploadActionType.CHANGE_UPLOAD_PROGRESS_PERCENT, payload: { uploadProgressPercent } });
+    changeUploadStatus = (uploadStatus: UploadStatusEnum) => this.dispatch({ type: UploadActionType.CHANGE_UPLOAD_STATUS, payload: { uploadStatus } });
+    changeUploadProgressPercent = (uploadProgressPercent: number, uploadProgressSize: number) => this.dispatch({ type: UploadActionType.CHANGE_UPLOAD_PROGRESS_PERCENT, payload: { uploadProgressPercent, uploadProgressSize } });
     setFilesToUpload = (filesToUpload: File[]) => this.dispatch({ type: UploadActionType.SET_FILES_TO_UPLOAD, payload: { filesToUpload} })
 }

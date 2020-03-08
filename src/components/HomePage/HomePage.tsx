@@ -1,8 +1,9 @@
 import React from 'react';
 import TransferCardContainer from '../TransferCardContainer/TransferCardContainer';
+import Header from '../Header/Header';
 const HomePage = () => {
     return <div>
-        <div>Header</div>
+        <Header/>
         <TransferCardContainer/>
     </div>
 

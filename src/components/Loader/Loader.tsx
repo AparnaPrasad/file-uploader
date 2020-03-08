@@ -1,33 +1,44 @@
 import React from 'react';
+import palette from '../../utilities/palette'; 
+import './loader.scss';
 interface Props {
-    percent: number
+    percent: number,
+    width?: number,
+    strokeWidth?: number,
+    loaderBackground?: string,
+    loaderColor?: string
 }
-const Loader = ({ percent }: Props) => {
-    const radius = 58;
-    //const percent = 4;
+const Loader = ({ percent, width = 120, strokeWidth = 5,
+    loaderColor = palette.primaryBlue,
+    loaderBackground = palette.lightGrey
+
+}: Props) => {
+    const radius = (width - (strokeWidth * 2))/2;
     const circumference = radius * 2 * Math.PI;
     const offset = circumference - percent / 100 * circumference;
+    const padding = 2;
+    const containerSize = width + padding;
+    const offsetXY = containerSize/2
     return <svg
         className="progress-ring"
-        height="130"
-        width="130"
-    >
+        height={containerSize}
+        width={containerSize}>
         <circle
-            stroke='blue'
-            strokeWidth="5"
+            stroke={loaderBackground}
+            strokeWidth={strokeWidth}
             fill="transparent"
-            r="58"
-            cx="65"
-            cy="65"
+            r={radius}
+            cx={offsetXY}
+            cy={offsetXY}
         />
         <circle
             className="progress-ring__circle"
-            stroke='red'
-            strokeWidth="5"
+            stroke={loaderColor}
+            strokeWidth={strokeWidth}
             fill="transparent"
-            r="58"
-            cx="65"
-            cy="65"
+            r={radius}
+            cx={offsetXY}
+            cy={offsetXY}
             style={
                 {
                     strokeDasharray: `${circumference} ${circumference}`,
@@ -38,11 +49,11 @@ const Loader = ({ percent }: Props) => {
 
         />
         <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle">
-            <tspan>
+            <tspan className={'progress-percent'}>
                 {percent}
-                <tspan baselineShift="super">
-                    %
-                    </tspan>
+            </tspan>
+            <tspan baselineShift="super" className={'percent-tspan'}>
+                %
             </tspan>
         </text>
     </svg>

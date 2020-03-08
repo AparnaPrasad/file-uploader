@@ -11,6 +11,9 @@
 
 .progress-ring__circle {
     animation: App-logo-spin infinite 1.5s ease-out;
-    /*transform-box: fill-box;*/
     transform-origin: center;
+}
+
+.progress-percent{
+    font-size: 40px;
 }
