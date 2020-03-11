@@ -9,7 +9,7 @@
 Tested with node v10 and v12
 
 ### Demo
-
+![](https://recordit.co/EACBQ45s3X)
 ### Implemented Features
 
 1. Add files and Start transfer
