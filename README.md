@@ -9,7 +9,8 @@
 Tested with node v10 and v12
 
 ### Demo
-![alt text](https://recordit.co/EACBQ45s3X)
+![alt text](http://g.recordit.co/EACBQ45s3X.gif)
+
 ### Implemented Features
 
 1. Add files and Start transfer
