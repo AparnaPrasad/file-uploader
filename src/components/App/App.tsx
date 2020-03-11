@@ -4,12 +4,7 @@ import configureStore from '../../store/createStore';
 import HomePage from '../HomePage/HomePage';
 import { Container } from 'react-bootstrap';
 import styled from 'styled-components';
-/*const styles = {
-    container: {
-        padding: '0 15px',
-        height: '100%'
-    },
-}*/
+
 const StyledContainer = styled(Container)`
 padding: '0 15px';
 height: '100%';
