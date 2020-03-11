@@ -3,7 +3,6 @@ import { findByAttribute, mockFile } from '../../utilities/testUtils';
 import { shallow } from 'enzyme';
 import TransferReadyPage, { Props } from './TransferReadyPage';
 import { UploadStatusEnum } from '../../store/upload-reducer/upload-reducer';
-//import constants from '../../utilities/constants';
 
 const renderComponent = (props: Partial<Props> = {}) => {
 

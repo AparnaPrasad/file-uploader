@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const AddFile = () => {
     return <svg data-test-id='add-file-icon-test-id' style={{width: '36px'}} viewBox="0 0 72 72">
         <path d="M36.493 72C16.118 72 0

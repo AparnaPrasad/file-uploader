@@ -2,7 +2,6 @@ import React from 'react';
 import { findByAttribute, mockFile } from '../../utilities/testUtils';
 import { shallow } from 'enzyme';
 import FileList, { Props } from './FilesList';
-import constants from '../../utilities/constants';
 
 const renderComponent = (props: Partial<Props> = {}) => {
     const defaultProps: Props = {

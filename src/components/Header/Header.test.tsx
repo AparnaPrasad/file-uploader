@@ -3,8 +3,6 @@ import { findByAttribute } from '../../utilities/testUtils';
 import { shallow } from 'enzyme';
 import Header from './Header';
 
-
-
 const renderComponent = () => {
     const wrapper = shallow(<Header />);
     return wrapper;

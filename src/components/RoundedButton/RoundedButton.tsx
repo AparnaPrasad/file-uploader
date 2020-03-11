@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import palette from '../../utilities/palette';
-//import palette from '../../utilities/palette';
 
 export interface Props {
     variant?: 'primary' | 'secondary'|'outline-primary',
@@ -10,14 +9,6 @@ export interface Props {
     children?: React.ReactNode,
     disabled?: boolean
 }
-
-//const StyledButton = styled(Button)`
-//    border-radius: '19px',
-//    &:disabled {
-//        background: ${palette.lightGrey},
-//        color: ${palette.fontColor}
-//    }
-//`
 
 const StyledButton = styled(Button)`
     

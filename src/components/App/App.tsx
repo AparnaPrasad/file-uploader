@@ -21,15 +21,3 @@ const App = () => {
 }
 
 export default App;
-
-/*
- set up tests --done
- **file transfer remaining time --done
- * clean up - ts strict
- * 
- transfer card container
- bootstrap disabled style
- react-intl for plural
- test loader, and few more tests
- change scroll bar
- */
