@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone'
-import RoundedButton from '../RoundedButton/RoundedButton';
 import styled from 'styled-components';
-import  AddFile  from './AddFile';
+import AddFile from '../AddFileIcon/AddFileIcon';
+import constants from '../../utilities/constants';
 
-interface Props {
+export interface Props {
     setFilesToUpload: (files: File[]) => void,
     filesToUpload: File[]
 }
@@ -34,22 +34,22 @@ const styles = {
 const DragAndDrop = ({ setFilesToUpload, filesToUpload}: Props) => {
     const onDrop = useCallback((acceptedFiles: File[]) => {
         setFilesToUpload(filesToUpload.concat(acceptedFiles));
-    }, [filesToUpload]);
+    }, [filesToUpload, setFilesToUpload]);
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
     const hasFilesToUpload = filesToUpload.length > 0;
     const dropZoneStyle = hasFilesToUpload ? {} : styles.dropZoneWithoutFilesToUpload;
-
+    const { uploadTextAddMore, uploadTextAddFiles } = constants;
     const getAddFilesText = () => {
         return <StyledAddFilesContainer>
             <AddFile />
             <StyledTextContainer>
-                <h5>{hasFilesToUpload ? 'Add more files' : 'Add your files'}</h5>
+                <h5 data-test-id='add-files-text-element-id'>{hasFilesToUpload ? uploadTextAddMore : uploadTextAddFiles}</h5>
                 <StyledDropText>or drop</StyledDropText>
             </StyledTextContainer>
         </StyledAddFilesContainer>
     }
 
-    return <div style={{ ...styles.dropZone, ...dropZoneStyle }}  {...getRootProps()}>
+    return <div data-test-id='drag-and-drop-component-id' style={{ ...styles.dropZone, ...dropZoneStyle }}  {...getRootProps()}>
         <input {...getInputProps()} />
         {
             getAddFilesText()

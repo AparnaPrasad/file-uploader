@@ -1,20 +1,20 @@
 import React from 'react';
-import { UploadStatusEnum } from '../../store/upload-reducer';
+import { UploadStatusEnum } from '../../store/upload-reducer/upload-reducer';
 import axios, { Canceler } from 'axios';
 import TransferLoaderPage from '../TransferLoaderPage/TransferLoaderPage';
 import TransferReadyPage from '../TransferReadyPage/TransferReadyPage';
 import styled from 'styled-components';
 
-interface Props {
+export interface Props {
     uploadStatus: UploadStatusEnum,
     uploadProgressPercent: number,
     changeUploadStatus: (uploadStatus: UploadStatusEnum) => void,
-    changeUploadProgressPercent: (uploadProgressPrecent: number, uploadProgressSize: number) => void,
+    changeUploadProgress: (uploadProgressPrecent: number, uploadProgressSize: number, uploadTimeRemaining: number) => void,
     setFilesToUpload: (filesToUpload: File[]) => void;
     filesToUpload: File[],
     uploadProgressSize: number,
-    filesToUploadSize: number
-
+    filesToUploadSize: number,
+    uploadTimeLeft: number
 }
 
 const StyledTransferCard = styled.div`
@@ -39,16 +39,18 @@ const TransferCard = ({ uploadStatus,
     filesToUpload,
     uploadProgressPercent,
     changeUploadStatus,
-    changeUploadProgressPercent,
+    changeUploadProgress,
     setFilesToUpload,
     filesToUploadSize,
-    uploadProgressSize
+    uploadProgressSize,
+    uploadTimeLeft
 }: Props) => {
     
     const transferFiles = () => {
         const formData = new FormData();
         filesToUpload.map((file: any) => (formData.append('file', file)))
         changeUploadStatus(UploadStatusEnum.UPLOAD_IN_PROGRESS);
+        const transferStartTime = Date.now();
         axios({
             method: 'post',
             headers: {
@@ -58,7 +60,11 @@ const TransferCard = ({ uploadStatus,
             url: 'http://www.mocky.io/v2/5e29b0b93000006500faf227',
             onUploadProgress: (ev: ProgressEvent) => {
                 const progress = ev.loaded / ev.total * 100;
-                changeUploadProgressPercent(Math.round(progress), ev.loaded);
+                const dataTransferRemaining = filesToUploadSize - ev.loaded;
+                const timeElapsed = Date.now() - transferStartTime;
+                const timeRemaining = (dataTransferRemaining / ev.loaded) * timeElapsed
+                changeUploadProgress(Math.round(progress), ev.loaded, timeRemaining);
+
             },
             cancelToken: new axios.CancelToken(function executor(c) {
                     cancel = c;
@@ -77,6 +83,7 @@ const TransferCard = ({ uploadStatus,
     }
 
     let page = <TransferReadyPage
+        data-test-id='transfer-ready-page-element-id'
         filesToUpload={filesToUpload}
         setFilesToUpload={setFilesToUpload}
         transferFiles={transferFiles}
@@ -85,8 +92,9 @@ const TransferCard = ({ uploadStatus,
 
     if (uploadStatus === UploadStatusEnum.UPLOAD_IN_PROGRESS || uploadStatus === UploadStatusEnum.UPLOAD_DONE) {
         page = <TransferLoaderPage
+            data-test-id='transfer-load-page-element-id'
             cancel={cancel}
-            changeUploadProgressPercent={changeUploadProgressPercent}
+            changeUploadProgress={changeUploadProgress}
             changeUploadStatus={changeUploadStatus}
             setFilesToUpload={setFilesToUpload}
             uploadProgressPercent={uploadProgressPercent}
@@ -94,6 +102,7 @@ const TransferCard = ({ uploadStatus,
             numberOfFilesInUploadQueue={filesToUpload.length}
             uploadProgressSize={uploadProgressSize}
             filesToUploadSize={filesToUploadSize}
+            uploadTimeLeft={uploadTimeLeft}
         />
     }
     

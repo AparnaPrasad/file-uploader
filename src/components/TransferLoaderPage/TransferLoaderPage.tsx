@@ -1,23 +1,26 @@
 import React from 'react';
 import Loader from '../Loader/Loader';
-import { UploadStatusEnum } from '../../store/upload-reducer';
+import { UploadStatusEnum } from '../../store/upload-reducer/upload-reducer';
 import { Canceler } from 'axios';
 import commonStyles from '../../utilities/commonStyles';
 import { Container } from 'react-bootstrap';
 import { StyledRemainingHeightContainer, StyledButtonContainer } from '../StyledContainer/StyledContainer';
 import RoundedButton from '../RoundedButton/RoundedButton';
 import styled from 'styled-components';
-import { bytesToSize } from '../../utilities/helper';
-interface Props {
+import { bytesToSize, millisToMinutes, pluralize } from '../../utilities/helper';
+import constants from '../../utilities/constants';
+
+export interface Props {
     uploadStatus: UploadStatusEnum,
     uploadProgressPercent: number,
     changeUploadStatus: (uploadStatus: UploadStatusEnum) => void,
-    changeUploadProgressPercent: (uploadProgressPercent: number, uploadProgressSize: number) => void,
+    changeUploadProgress: (uploadProgressPercent: number, uploadProgressSize: number, uploadTimeRemaining: number) => void,
     cancel: Canceler,
     setFilesToUpload: (files: File[]) => void;
     numberOfFilesInUploadQueue: number,
     uploadProgressSize: number,
-    filesToUploadSize: number
+    filesToUploadSize: number,
+    uploadTimeLeft: number
 }
 
 const StyledLoaderAndTextContainer = styled.div`
@@ -39,29 +42,30 @@ const StyledTransferDetailsContainer = styled.div`
 const TransferLoaderPage = ({ uploadStatus,
     uploadProgressPercent,
     changeUploadStatus,
-    changeUploadProgressPercent,
+    changeUploadProgress,
     cancel,
     setFilesToUpload,
     numberOfFilesInUploadQueue,
     filesToUploadSize,
-    uploadProgressSize
+    uploadProgressSize,
+    uploadTimeLeft
 }: Props) => {
     const cancelTransfer = () => {
         changeUploadStatus(UploadStatusEnum.UPLOAD_CANCELLED);
-        changeUploadProgressPercent(0, 0)
+        changeUploadProgress(0, 0, 0)
         if (cancel) {
             cancel()
         }
     }
 
     const startNewTransfer = () => {
-        changeUploadProgressPercent(0, 0);
+        changeUploadProgress(0, 0, 0);
         setFilesToUpload([]);
         changeUploadStatus(UploadStatusEnum.UPLOAD_READY_TO_START);
     }
 
     const getButtonText = () => {
-        return uploadStatus === UploadStatusEnum.UPLOAD_IN_PROGRESS ? 'Cancel' : 'Another Transfer?'
+        return uploadStatus === UploadStatusEnum.UPLOAD_IN_PROGRESS ? constants.cancel : constants.anotherTransfer
     }
 
     const buttonClick = () => {
@@ -74,32 +78,33 @@ const TransferLoaderPage = ({ uploadStatus,
     }
 
     const getButton = () => {
-        return <RoundedButton variant='outline-primary' onClick={() => buttonClick()}>
+        return <RoundedButton data-test-id='loader-page-button-element-id' variant='outline-primary' onClick={() => buttonClick()}>
             {getButtonText()}
         </RoundedButton>
     }
 
     const getTransferText = () => {
-        return uploadStatus === UploadStatusEnum.UPLOAD_IN_PROGRESS ? 'Transferring...': 'Done!'
+        return uploadStatus === UploadStatusEnum.UPLOAD_IN_PROGRESS ? constants.transferTextInProgress : constants.transferTextDone
     }
-
+    const { time, unit } = millisToMinutes(uploadTimeLeft);
     return <Container
+        data-test-id='transfer-loader-page'
         fluid style={commonStyles.containerStyle}>
         <StyledRemainingHeightContainer>
             <StyledLoaderAndTextContainer>
                 <Loader
+                    data-test-id='loader-element-id'
                     width={170}
                     strokeWidth={7}
                     percent={uploadProgressPercent} />
-                <StyledTransferingText>
+                <StyledTransferingText data-test-id='transfer-text-element-id'>
                     {getTransferText()}
                 </StyledTransferingText>
-
                 {uploadStatus === UploadStatusEnum.UPLOAD_IN_PROGRESS &&
                     (<React.Fragment>
-                    <StyledTransferDetailsContainer>Sending {numberOfFilesInUploadQueue} {numberOfFilesInUploadQueue === 1 ? 'file': 'files'} to {1} recipient</StyledTransferDetailsContainer>
-                    <StyledTransferDetailsContainer>{bytesToSize(uploadProgressSize)} of {bytesToSize(filesToUploadSize)} uploaded</StyledTransferDetailsContainer>
-                        <StyledTransferDetailsContainer>x minutes remaining</StyledTransferDetailsContainer>
+                        <StyledTransferDetailsContainer data-test-id='file-upload-progress-element-id'>Sending {numberOfFilesInUploadQueue} {pluralize(numberOfFilesInUploadQueue, 'file')} to {1} recipient</StyledTransferDetailsContainer>
+                        <StyledTransferDetailsContainer data-test-id='uploaded-size-element-id'>{bytesToSize(uploadProgressSize)} of {bytesToSize(filesToUploadSize)} uploaded</StyledTransferDetailsContainer>
+                        <StyledTransferDetailsContainer data-test-id='upload-time-remaining-element-id'>{time} {pluralize(time, unit)} remaining</StyledTransferDetailsContainer>
                     </React.Fragment>)
                 }
             </StyledLoaderAndTextContainer>

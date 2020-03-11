@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import FilesList from '../FilesList/FilesList';
 import DragAndDrop from '../DragAndDrop/DragAndDrop';
 
-interface Props {
+export interface Props {
     setFilesToUpload: (filesToUpload: File[]) => void;
     filesToUpload: File[]
 }
@@ -19,9 +19,10 @@ const StyledUploadFilesContainer = styled.div`
 const UploadFiles = ({ setFilesToUpload, filesToUpload}:Props) => {
     
     return (
-        <StyledUploadFilesContainer>
-            <FilesList filesToUpload={filesToUpload} />
+        <StyledUploadFilesContainer data-test-id='upload-files-component-id'>
+            <FilesList data-test-id='file-list-element-id' filesToUpload={filesToUpload} />
             <DragAndDrop
+                data-test-id='drag-and-drop-element-id'
                 filesToUpload={filesToUpload}
                 setFilesToUpload={setFilesToUpload} />
         </StyledUploadFilesContainer>

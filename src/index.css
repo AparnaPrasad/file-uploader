@@ -14,4 +14,6 @@ code {
 
 html, body, div#root {
     height: 100vh;
+    scrollbar-base-color: #808080;
+    scrollbar-face-color: red;
 }

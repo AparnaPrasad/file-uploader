@@ -1,20 +1,20 @@
 import React from 'react';
 import { findByAttribute } from '../../utilities/testUtils';
 import { shallow } from 'enzyme';
-import App from './App';
+import AddFileIcon from './AddFileIcon';
 
 
 
 const renderComponent = () => {
-    const wrapper = shallow(<App />);
+    const wrapper = shallow(<AddFileIcon />);
     return wrapper;
 }
 
-describe('test App component', () => {
+describe('test AddFile icon', () => {
     it('should render the compoenent without error', () => {
         const wrapper = renderComponent();
-        const addFileIconComponent = findByAttribute(wrapper, 'app-component-id');
-        expect(addFileIconComponent.length).toBe(1)
+        const addFileIconComponent = findByAttribute(wrapper, 'add-file-icon-test-id');
+        expect(addFileIconComponent).toHaveLength(1)
     })
 
 })

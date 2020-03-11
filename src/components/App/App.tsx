@@ -12,8 +12,7 @@ const styles = {
 }
 const App = () => {
     const store = configureStore();
-
-    return (<Provider store={store}>
+    return (<Provider data-test-id='app-component-id' store={store}>
         <Container fluid style={styles.container}>
             <HomePage />
         </Container>
@@ -22,3 +21,15 @@ const App = () => {
 }
 
 export default App;
+
+/*
+ set up tests --done
+ **file transfer remaining time --done
+ * clean up - ts strict
+ * 
+ transfer card container
+ bootstrap disabled style
+ react-intl for plural
+ test loader, and few more tests
+ change scroll bar
+ */

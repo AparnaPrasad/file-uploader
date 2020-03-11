@@ -1,7 +1,7 @@
 import React from 'react';
 import TransferCard from '../TransferCard/TransferCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { UploadActionDispatcher, UploadStatusEnum } from '../../store/upload-reducer';
+import { UploadActionDispatcher, UploadStatusEnum } from '../../store/upload-reducer/upload-reducer';
 import { ApplicationState } from '../../store';
 
 interface ReduxProps {
@@ -9,37 +9,42 @@ interface ReduxProps {
     uploadProgressPercent: number,
     filesToUpload: File[],
     uploadProgressSize: number,
-    filesToUploadSize: number
+    filesToUploadSize: number,
+    uploadTimeLeft: number
+
 }
 
 const TransferCardContainer = () => {
 
     const dispatch = useDispatch();
     const pageActionDispatcher = new UploadActionDispatcher(dispatch);
-    const { changeUploadProgressPercent, changeUploadStatus, setFilesToUpload } = pageActionDispatcher;
+    const { changeUploadProgress, changeUploadStatus, setFilesToUpload } = pageActionDispatcher;
     const { uploadStatus, uploadProgressPercent, filesToUpload,
         uploadProgressSize,
-        filesToUploadSize
+        filesToUploadSize,
+        uploadTimeLeft
     } = useSelector<ApplicationState, ReduxProps>((state: ApplicationState) => {
         return {
             uploadStatus: state.uploadState.uploadStatus,
             uploadProgressPercent: state.uploadState.uploadProgressPercent,
             filesToUpload: state.uploadState.filesToUpload,
             uploadProgressSize: state.uploadState.uploadProgressSize,
-            filesToUploadSize: state.uploadState.filesToUploadSize
+            filesToUploadSize: state.uploadState.filesToUploadSize,
+            uploadTimeLeft: state.uploadState.uploadTimeLeft
         }
     });
-    return <div>
-        <TransferCard uploadStatus={uploadStatus}
+    return <div data-test-id='transfer-card-component-id'>
+    <TransferCard
+            uploadStatus={uploadStatus}
             uploadProgressPercent={uploadProgressPercent}
             changeUploadStatus={changeUploadStatus}
-            changeUploadProgressPercent={changeUploadProgressPercent}
+            changeUploadProgress={changeUploadProgress}
             filesToUpload={filesToUpload}
             setFilesToUpload={setFilesToUpload}
             uploadProgressSize={uploadProgressSize}
             filesToUploadSize={filesToUploadSize}
-
-        /> 
-    </div>
+            uploadTimeLeft={uploadTimeLeft}
+        />
+        </div>
 }
 export default TransferCardContainer;

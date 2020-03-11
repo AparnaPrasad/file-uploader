@@ -2,7 +2,7 @@ import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 import { bytesToSize, getFileType } from '../../utilities/helper';
-interface Props {
+export interface Props {
     file: File
 }
 
@@ -28,12 +28,12 @@ const StyledFileDetailsItem = styled.div`
 `
 
 const ListItem = ({ file }: Props) => {
-    return <ListGroup.Item>
-        <StyledFileName>{file.name}</StyledFileName>
+    return <ListGroup.Item data-test-id='list-item-component-id'>
+        <StyledFileName data-test-id='file-name-element-id' >{file.name}</StyledFileName>
         <StyledFileDetails>
-            <StyledFileDetailsItem>{bytesToSize(file.size)}</StyledFileDetailsItem>
+            <StyledFileDetailsItem data-test-id='file-size-element-id'>{bytesToSize(file.size)}</StyledFileDetailsItem>
             <StyledFileDetailsItem>.</StyledFileDetailsItem>
-            <StyledFileDetailsItem> {getFileType(file.type)}</StyledFileDetailsItem>
+            <StyledFileDetailsItem data-test-id='file-type-element-id'>{getFileType(file.type)}</StyledFileDetailsItem>
         </StyledFileDetails>
     </ListGroup.Item>
 }

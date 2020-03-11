@@ -1,4 +1,4 @@
-import { uploadReducer, UploadState } from './upload-reducer';
+import { uploadReducer, UploadState } from './upload-reducer/upload-reducer';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({ //can add more reducers here

@@ -4,7 +4,7 @@ import { StyledRemainingHeightContainer } from '../StyledContainer/StyledContain
 import { ListGroup } from 'react-bootstrap';
 import ListItem from '../ListItem/ListItem';
 
-interface Props {
+export interface Props {
     filesToUpload: File[]
 }
 
@@ -17,10 +17,10 @@ const StyledUploadFilesHeader = styled.div`
 const FilesList = ({ filesToUpload }: Props) => {
     if (!filesToUpload.length)
         return null;
-    return <StyledRemainingHeightContainer>
-        <StyledUploadFilesHeader>Uploaded files</StyledUploadFilesHeader>
+    return <StyledRemainingHeightContainer data-test-id='file-list-component-id'>
+        <StyledUploadFilesHeader data-test-id='uploaded-files-header-element-id'>Uploaded files</StyledUploadFilesHeader>
         <StyledRemainingHeightContainer>
-            <ListGroup >
+            <ListGroup data-test-id="file-list-element-id">
                 {filesToUpload.map((file: File, index: number) => (
                     <ListItem key={index} file={file} />
                 ))}

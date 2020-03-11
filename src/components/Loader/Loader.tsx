@@ -1,6 +1,6 @@
 import React from 'react';
 import palette from '../../utilities/palette'; 
-import './loader.scss';
+import './loader.css';
 interface Props {
     percent: number,
     width?: number,

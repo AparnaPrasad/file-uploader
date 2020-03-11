@@ -2,7 +2,7 @@ import React from 'react';
 
 
 const AddFile = () => {
-    return <svg style={{width: '36px'}} viewBox="0 0 72 72">
+    return <svg data-test-id='add-file-icon-test-id' style={{width: '36px'}} viewBox="0 0 72 72">
         <path d="M36.493 72C16.118 72 0
 		55.883 0 36.493 0 16.118 16.118 0 36.493 
 		0 55.882 0 72 16.118 72 36.493 72 55.882
