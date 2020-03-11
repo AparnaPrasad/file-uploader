@@ -5,6 +5,7 @@
 * npm i 
 * npm start - to run the application
 * npm test - to run the test cases
+
 Tested with node v10 and v12
 
 ### Demo
